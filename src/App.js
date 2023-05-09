@@ -1,18 +1,19 @@
 import './App.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { storage } from "./firebase";
-import { ref, uploadBytes } from "firebase/storage"; //ref function will make the referance to where (in which folder)
+import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage"; //ref function will make the referance to where (in which folder)
 //we gonna store images in the firebase
 //this function will make the referance to where (in which folder)
 import { v4 } from "uuid"; //to randomise letters
 
 
-
-
-
 function App() {
 
   const [imageUpload, setImageUpload] = useState(null);
+  const [imageList, setImageList] = useState([]);
+
+  const imageListRef = ref(storage, "images/"); //it is the referense to the path in oue storage
+
 
   const uploadImage = () => {
     if(imageUpload === null) return;
@@ -23,11 +24,26 @@ function App() {
     })
 
   }
+
+  useEffect(() => {
+    listAll(imageListRef).then((response) => { //listAll is a firebase function that list all files in the argument's path 
+      response.items.forEach((item) => {
+        getDownloadURL(item).then((url) => {
+          setImageList((prev) => [...prev, url]);
+        })
+      })
+    })
+  }, []);
+
+
   
   return (
     <div className="App">
       <input type="file" onChange={(event) => {setImageUpload(event.target.files[0])}}/>
       <button onClick={uploadImage}>Upload Image</button>
+      {imageList.map((url, key) => {
+        return <img src={url} style={{width: 200}} key={`img-${key}`}/>
+      })}
     </div>
   );
 }
