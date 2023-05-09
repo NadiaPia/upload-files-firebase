@@ -17,7 +17,7 @@ function App() {
 
 
   const uploadImage = () => {
-    if(imageUpload === null) return;
+    if (imageUpload === null) return;
     //console.log(imageUpload) //File {name: 'water.jpg', lastModified: 1683187623304, lastModifiedDate: Thu May 04 2023 01:07:03 GMT-0700 (Тихоокеанское летнее время), webkitRelativePath: '', size: 133362, …}
     const imageRef = ref(storage, `images/${imageUpload.name + v4()}`); //put image with the name "${imageUpload.name + v4()}" to the images folder in the storage of the firebase
     uploadBytes(imageRef, imageUpload).then((snapshot) => {
@@ -25,8 +25,7 @@ function App() {
       getDownloadURL(snapshot.ref).then((url) => {
         setImageList((prev) => [url, ...prev])
       })
-
-    })
+    });
 
   }
 
@@ -41,14 +40,18 @@ function App() {
   }, []);
 
 
-  
+
   return (
-    <div className="App">
-      <input type="file" onChange={(event) => {setImageUpload(event.target.files[0])}}/>
-      <button onClick={uploadImage}>Upload Image</button>
-      {imageList.map((url, key) => {
-        return <img src={url} style={{width: 200}} key={`img-${key}`}/>
-      })}
+    <div className="App" lang="en">
+      <div className="form">
+        <input type="file" onChange={(event) => { setImageUpload(event.target.files[0]) }} />
+        <button onClick={uploadImage}>Upload Image</button>
+      </div>
+      <div className="list">
+        {imageList.map((url, key) => {
+          return <img src={url} style={{ width: 200 }} key={`img-${key}`} />
+        })}
+      </div>
     </div>
   );
 }

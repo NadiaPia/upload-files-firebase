@@ -6,7 +6,38 @@
   flex-direction: column;
 }
 
-img {
+.list img {
   width: 300px;
-  margin: 10px;
+  margin: 10px;  
 }
+
+.list {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.form {
+  display: flex;
+  align-items:center;
+  flex-direction: column;
+  margin-bottom: 20px;
+  
+}
+
+.form button {
+  margin-top: 5px;  
+  color: grey;
+  font-weight: bold;
+  font-size: large;
+  width: 150px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid grey;
+  
+}
+.form button:hover {
+  background-color: rgb(226, 221, 221);
+  cursor: pointer;
+}
+
