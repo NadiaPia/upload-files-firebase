@@ -1,3 +1,4 @@
+
 import './App.css';
 import { useState, useEffect } from "react";
 import { storage } from "./firebase";
@@ -19,8 +20,12 @@ function App() {
     if(imageUpload === null) return;
     //console.log(imageUpload) //File {name: 'water.jpg', lastModified: 1683187623304, lastModifiedDate: Thu May 04 2023 01:07:03 GMT-0700 (Тихоокеанское летнее время), webkitRelativePath: '', size: 133362, …}
     const imageRef = ref(storage, `images/${imageUpload.name + v4()}`); //put image with the name "${imageUpload.name + v4()}" to the images folder in the storage of the firebase
-    uploadBytes(imageRef, imageUpload).then(() => {
-      alert("Image Uploaded")
+    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      //alert("Image Uploaded")
+      getDownloadURL(snapshot.ref).then((url) => {
+        setImageList((prev) => [url, ...prev])
+      })
+
     })
 
   }
@@ -29,7 +34,7 @@ function App() {
     listAll(imageListRef).then((response) => { //listAll is a firebase function that list all files in the argument's path 
       response.items.forEach((item) => {
         getDownloadURL(item).then((url) => {
-          setImageList((prev) => [...prev, url]);
+          setImageList((prev) => [url, ...prev]);
         })
       })
     })
@@ -49,3 +54,4 @@ function App() {
 }
 
 export default App;
+
